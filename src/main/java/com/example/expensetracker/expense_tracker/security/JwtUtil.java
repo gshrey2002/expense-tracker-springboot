@@ -7,7 +7,7 @@ import javax.crypto.SecretKey;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-// import java.sql.Date;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 
@@ -21,7 +21,6 @@ public class JwtUtil {
     private int jwtExpirationMs;
 
     private SecretKey getSigningKey() {
-        // Convert your secret string to a proper SecretKey
         return Keys.hmacShaKeyFor(jwtSecret.getBytes());
     }
 
@@ -34,6 +33,27 @@ public class JwtUtil {
                 .expiration(expiry)
                 .signWith(getSigningKey())
                 .compact();
+    }
+
+    public String extractUsername(String token) {
+        return extractClaims(token).getSubject();
+    }
+
+    public boolean isTokenValid(String token) {
+        try {
+            extractClaims(token);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    private Claims extractClaims(String token) {
+        return Jwts.parser()
+                .verifyWith(getSigningKey())
+                .build()
+                .parseSignedClaims(token)
+                .getPayload();
     }
 
 }

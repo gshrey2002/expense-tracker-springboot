@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.expensetracker.dto.AuthRequest;
 import com.example.expensetracker.dto.AuthResponse;
 import com.example.expensetracker.dto.RegisterRequest;
 import com.example.expensetracker.expense_tracker.service.AuthService;
@@ -22,6 +23,12 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<AuthResponse> register(@RequestBody @Valid RegisterRequest req) {
         AuthResponse resp = authService.register(req);
+        return ResponseEntity.ok(resp);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<AuthResponse> login(@RequestBody @Valid AuthRequest req) {
+        AuthResponse resp = authService.login(req);
         return ResponseEntity.ok(resp);
     }
 }

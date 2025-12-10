@@ -4,10 +4,15 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 @Data
-public class AuthRequest {
-    @NotBlank
-    private String email;
+public class CreateAccountRequest {
 
     @NotBlank
-    private String password;
+    private String name;
+
+    @NotBlank
+    private String type;
+
+    @NotBlank
+    private String currency;
+
 }
